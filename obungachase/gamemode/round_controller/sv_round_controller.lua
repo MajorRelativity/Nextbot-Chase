@@ -1,5 +1,7 @@
 local round_status = 0 -- 0 = end, 1 = active
-local round_length = 40-- Seconds
+local round_length = 600 -- Seconds'
+local AmmoRegen = 0 -- Initialize regen counter variable
+
 
 util.AddNetworkString("UpdateRoundStatus")
 
@@ -10,21 +12,27 @@ function beginRound()
 
         -- Round Status
         round_status = 1
-
-        -- End Round Timer
-        timer.Simple(round_length, function()
-        endRound()
-        end) 
         
         -- Give Loadout to New Players
         local ply = player.GetAll()
         print(ply[1]:Deaths())
         for k, v in pairs(ply) do
             ply[k]:RemoveAllItems()
-
-            ply[k]:Give("weapon_stunstick")
+            ply[k]:SetFrags( 0 )
             ply[k]:SetDeaths( 0 )
+
+            -- Atributes:
+            ply[k]:SetHealth( 2*ply[k]:GetMaxHealth() )
+            ply[k]:SetRunSpeed( 600 )
+            ply[k]:SetMaxSpeed( 600 )
+            print(ply[k]:GetMaxSpeed())
+
+            -- Loadout
+            ply[k]:Give("weapon_shotgun")
+            ply[k]:Give("weapon_fists")
             ply[k]:SetModel("models/player/gman_high.mdl")
+
+
         end
 
         -- Other Things Timer
@@ -44,6 +52,27 @@ function beginRound()
                 tempObunga:Spawn()
                 print("[OC] Summoned Obunga")
             end
+            
+            -- Ammo Regen:
+            if AmmoRegen >= 3 then
+                for k, v in pairs(ply) do
+                    if ply[k]:Deaths() == 0 then
+                        local AmmoCount = ply[k]:GetAmmoCount("Buckshot")
+                        if AmmoCount < 6 then
+                            ply[k]:GiveAmmo( 1 , "Buckshot", true)
+                        end
+                    end
+                end
+                AmmoRegen = 0 -- Reset Ammo Regen
+            end
+            AmmoRegen = AmmoRegen + 1
+
+            -- Ends Round if Needed:
+
+            if round_length == t then
+                endRound()
+            end
+
             t = t + 1
         end)
 
@@ -60,17 +89,48 @@ end
 local function Respawn( ply )
     if ply:Deaths() > 0 then
         ply:Give("weapon_crowbar")
+        ply:SetHealth( ply:GetMaxHealth() )
         ply:SetModel("models/kaydax/gman_obunga.mdl")
 	    print( "[OC] ".. ply:Nick() .. " has respawned as an Obunga!" )
     end
 end
 hook.Add( "PlayerSpawn", "Respawn", Respawn)
 
+-- Look to End Round Hook:
+local function checkRoundOver()
+    if round_status == 1 then
+        local Alive = 0
+        local playernum = 0
+        local ply = player.GetAll()
+        for k, v in pairs(ply) do
+            if ply[k]:Deaths() == 0 then
+                Alive = Alive + 1
+            end
+            playernum = playernum + 1 -- Counts number of Players
+        end
+
+        -- If number of players is more than 1
+        if Alive <= 1 and playernum > 1 then
+            endRound()
+        end
+
+        -- If number of players is less than 1
+        if Alive < 1 and playernum == 1 then
+            endRound()
+        end
+
+    end
+end
+hook.Add( "Think" , "checkRoundOver", checkRoundOver)
+
 -- End Round:
 function endRound()
 
     -- Set Round Status
     round_status = 0
+
+    -- Remove Timer:
+    timer.Remove( "RoundTimer" )
     
     -- Remove All Obungas
     obungas = ents.FindByClass( "npc_obunga" )
@@ -101,7 +161,7 @@ function endRound()
 
     if maxkills > 0 then
         for k, v in pairs(ply) do
-            if maxkills == ply[k]:Frags() then
+            if ply[k]:Deaths() > 0 and maxkills == ply[k]:Frags() then
                 PrintMessage(HUD_PRINTTALK, "[OC]"..ply[k]:Nick().." had the most kills (".. maxkills .. ") as an obunga!")
             end
         end
