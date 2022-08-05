@@ -4,7 +4,4 @@
 	"title"	"Obunga Chase"
 	"maps"	"gm_"
 	"menusystem" "1"
-
-	"Settings"
-
 }
