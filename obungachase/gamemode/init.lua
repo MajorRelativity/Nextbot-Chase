@@ -10,12 +10,12 @@ include("shared.lua")
 
 function GM:PlayerConnect(name, ip)
 
-    print("Player "..name.." connected with IP ("..ip..")")
+    print("[OC] Player "..name.." connected with IP ("..ip..")")
 
 end
 
 function GM:PlayerInitialSpawn(ply)
 
-    print("Player "..ply:Name().." has spawned")
+    print("[OC] Player "..ply:Name().." has spawned")
 
 end
