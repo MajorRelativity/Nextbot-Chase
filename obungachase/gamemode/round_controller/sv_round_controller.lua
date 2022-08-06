@@ -1,37 +1,67 @@
-local round_status = 0 -- 0 = end, 1 = active
-local round_length = 600 -- Seconds'
+
+-- Initialize Veriables
+local round_status = 0 -- 0 = end, 0.9 = starting in 10s, 1 = active
+local round_length = 600 -- Seconds
 local AmmoRegen = 0 -- Initialize regen counter variable
 
-
 util.AddNetworkString("UpdateRoundStatus")
+
+-- Initiate Round:
+
+function GM:ShowSpare1( ply )
+    if round_status == 0 then
+        preRound10( ply )
+    elseif round_status == 0.9 then
+        cancelPreRound( ply )
+    else
+        print("[OC] " .. ply:Nick() .. " attempted to start a round, but a round is already in progress.")
+    end
+
+end
+
+-- PreRound
+
+function cancelPreRound( ply )
+    timer.Remove( "preRound10Timer" )
+    round_status = 0
+    PrintMessage( 3 , "[OC] " .. ply:Nick() .. " canceled the round.")
+end
+
+function preRound10( ply )
+    round_status = 0.9
+    PrintMessage( 3 , "[OC] " .. ply:Nick() .. " started the round which will begin in 10 seconds.")
+    local t = 10
+    timer.Create("preRound10Timer", 1, t, function()
+        t = t - 1
+
+        -- Messages:
+        if t == 3 or t == 2 or t == 1 then
+            PrintMessage( 3 , "[OC] Game starting in " .. t)
+        end
+
+        if t == 0 then
+            beginRound()
+        end
+
+    end)
+end
 
 -- Begin Round
 function beginRound()
 
-    if round_status == 0 then
+    if round_status == 0.9 then
 
         -- Round Status
         round_status = 1
         
         -- Give Loadout to New Players
         local ply = player.GetAll()
-        print(ply[1]:Deaths())
         for k, v in pairs(ply) do
-            ply[k]:RemoveAllItems()
+
             ply[k]:SetFrags( 0 )
             ply[k]:SetDeaths( 0 )
 
-            -- Atributes:
-            ply[k]:SetHealth( 2*ply[k]:GetMaxHealth() )
-            ply[k]:SetRunSpeed( 600 )
-            ply[k]:SetMaxSpeed( 600 )
-            print(ply[k]:GetMaxSpeed())
-
-            -- Loadout
-            ply[k]:Give("weapon_shotgun")
-            ply[k]:Give("weapon_fists")
-            ply[k]:SetModel("models/player/gman_high.mdl")
-
+            Loadout(ply[k], 2)
 
         end
 
@@ -81,18 +111,56 @@ function beginRound()
 
         -- Message:
         PrintMessage(HUD_PRINTTALK, "[OC] Round Starting")
+    else
+        print("[OC] Attempted to start round but round is already in progress (see beginRound())")
     end
+
+end
+
+-- Loadouts:
+function Loadout( ply, kit )
+
+    -- General:
+    ply:SetRunSpeed( 600 )
+    ply:SetMaxSpeed( 600 )
+    ply:RemoveAllItems()
+
+    -- Specific
+    if kit == 1 then
+        -- Atributes:
+        ply:SetHealth( ply:GetMaxHealth() )
+        ply:SetModel("models/kaydax/gman_obunga.mdl")
+
+        -- Loadout:
+        ply:Give("weapon_crowbar")
+
+        print( "[OC] ".. ply:Nick() .. " has been given the Obunga loadout!" ) 
+    elseif kit == 2 then
+        -- Atributes:
+        ply:SetHealth( 2*ply:GetMaxHealth() )
+        ply:SetModel("models/player/gman_high.mdl")
+
+        -- Loadout
+        ply:Give("weapon_shotgun")
+        ply:Give("weapon_fists")
+
+        print( "[OC] ".. ply:Nick() .. " has been given the Runner loadout!" )
+    elseif kit == 3 then
+        ply:SetModel("models/player/leet.mdl")
+        print( "[OC] ".. ply:Nick() .. " has been given the Waiting loadout!" )
+    end 
 
 end
 
 -- Player Spawn Hook:
 local function Respawn( ply )
-    if ply:Deaths() > 0 then
-        ply:Give("weapon_crowbar")
-        ply:SetHealth( ply:GetMaxHealth() )
-        ply:SetModel("models/kaydax/gman_obunga.mdl")
-	    print( "[OC] ".. ply:Nick() .. " has respawned as an Obunga!" )
+
+    if round_status == 1 then
+        Loadout(ply, 1)
+    else
+        Loadout(ply, 3)
     end
+
 end
 hook.Add( "PlayerSpawn", "Respawn", Respawn)
 
@@ -144,11 +212,22 @@ function endRound()
     
     -- Winner Messages:
     local ply = player.GetAll()
+    local playernum = 0
+    local winners = 0
     for k, v in pairs(ply) do
-
+        playernum = playernum + 1
         if ply[k]:Deaths() == 0 then
             PrintMessage(HUD_PRINTTALK, "[OC] "..ply[k]:Nick().." is a winner!")
+            winners = winners + 1
         end
+    end
+
+    if winners == 0 and playernum == 1 then
+        PrintMessage(HUD_PRINTTALK, "[OC] Get 'bungad")
+    end
+
+    if winners == 0 and playernum > 1 then
+        PrintMessage(HUD_PRINTTALK, "[OC] Obunga Wins!")
     end
     
     -- Obunga with most kills:
