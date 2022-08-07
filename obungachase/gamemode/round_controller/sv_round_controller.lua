@@ -121,8 +121,9 @@ end
 function Loadout( ply, kit )
 
     -- General:
-    ply:SetRunSpeed( 600 )
-    ply:SetMaxSpeed( 600 )
+    ply:SetRunSpeed( 640 )
+    ply:SetMaxSpeed( 700 )
+    ply:SetWalkSpeed( 400 )
     ply:RemoveAllItems()
 
     -- Specific
@@ -165,6 +166,7 @@ end
 hook.Add( "PlayerSpawn", "Respawn", Respawn)
 
 -- Look to End Round Hook:
+-- If round is over, ensure that obungas are gone and timer is removed
 local function checkRoundOver()
     if round_status == 1 then
         local Alive = 0
@@ -186,7 +188,16 @@ local function checkRoundOver()
         if Alive < 1 and playernum == 1 then
             endRound()
         end
+    elseif round_status == 0 then
+        -- Remove Timer:
+        timer.Remove( "RoundTimer" )
+        
+        -- Remove All Obungas
+        local obungas = ents.FindByClass( "npc_obunga" )
 
+        for k, v in pairs(obungas) do 
+            obungas[k]:Remove()
+        end
     end
 end
 hook.Add( "Think" , "checkRoundOver", checkRoundOver)
@@ -201,7 +212,7 @@ function endRound()
     timer.Remove( "RoundTimer" )
     
     -- Remove All Obungas
-    obungas = ents.FindByClass( "npc_obunga" )
+    local obungas = ents.FindByClass( "npc_obunga" )
 
     for k, v in pairs(obungas) do 
         obungas[k]:Remove()
