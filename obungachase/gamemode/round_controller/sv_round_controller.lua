@@ -221,12 +221,15 @@ function endRound()
     -- Update Client of the Round Status
     updateClientRoundStatus()
     
-    -- Winner Messages:
+    -- Winner Messages and Loadout:
     local ply = player.GetAll()
     local playernum = 0
     local winners = 0
     for k, v in pairs(ply) do
+
+        Loadout( ply[k], 3)
         playernum = playernum + 1
+
         if ply[k]:Deaths() == 0 then
             PrintMessage(HUD_PRINTTALK, "[OC] "..ply[k]:Nick().." is a winner!")
             winners = winners + 1
