@@ -1,7 +1,9 @@
 "Gamemode"
 {
-	"base"	"base"
-	"title"	"Obunga Chase"
-	"maps"	"gm_"
-	"menusystem" "1"
+	"base"		"base"
+	"title"		"Obunga Chase"
+	"maps"		"gm_"
+	"category"		"pvp"
+	"menusystem" 	"1"
+	"workshopid"	"2846216265"
 }
