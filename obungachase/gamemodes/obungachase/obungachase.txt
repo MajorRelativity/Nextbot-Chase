@@ -6,4 +6,48 @@
 	"category"		"pvp"
 	"menusystem" 	"1"
 	"workshopid"	"2846216265"
+
+	"settings"
+	{
+		1
+		{
+			"name"		"q_infinite_round"
+			"text"		"Infinite Round Length"
+			"help"		"Boolean - If 1, round will not be stopped untill all but one player dies"
+			"type"		"CheckBox"
+			"default"	"0"
+			"singleplayer"	"1"
+		}
+
+
+		2
+		{
+			"name"		"q_round_length"
+			"text"		"Round Length (seconds)"
+			"help"		"Integer - The maximum length of each round"
+			"type"		"Numeric"
+			"default"	"600"
+			"singleplayer"	"1"
+		}
+
+		3
+		{
+			"name"		"q_more_obungas"
+			"text"		"Spawn More Obungas Over Time"
+			"help"		"Boolean - If enabled Obungas will increase in number over time"
+			"type"		"CheckBox"
+			"default"	"1"
+			"singleplayer"	"1"
+		}
+
+		4
+		{
+			"name"		"q_obunga_delay"
+			"text"		"Additional Obunga Spawn Delay (seconds)"
+			"help"		"Integer - The maximum length of each round"
+			"type"		"Numeric"
+			"default"	"200"
+			"singleplayer"	"1"
+		}
+	}
 }

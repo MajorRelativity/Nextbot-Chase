@@ -1,0 +1,1 @@
+-- cl_settings: Reconciles settings panel with server

@@ -1,8 +1,20 @@
 
 -- Initialize Veriables
 local round_status = 0 -- 0 = end, 0.9 = starting in 10s, 1 = active
-local round_length = 600 -- Seconds
 local AmmoRegen = 0 -- Initialize regen counter variable
+
+-- Pull ConVar Variables:
+local infinite_round = GetConVar("q_infinite_round"):GetBool()
+local round_length = 0
+if not infinite_round then
+    round_length = GetConVar("q_round_length"):GetFloat()
+end
+
+local more_obungas = GetConVar("q_more_obungas"):GetBool()
+local obunga_delay = -1
+if more_obungas then
+    obunga_delay = GetConVar("q_obunga_delay"):GetFloat()
+end
 
 util.AddNetworkString("UpdateRoundStatus")
 
@@ -67,20 +79,19 @@ function beginRound()
 
         -- Other Things Timer
         local t = 1 -- time counter variable
+        local tspawn = 0
         timer.Create("RoundTimer", 1, round_length, function()
 
             -- Creates and obunga at every specific time using player spawn locations
-            local ts1 = math.Round( 1*round_length/4) -- Spawn Times
-            local ts2 = math.Round( 2*round_length/4)
-            local ts3 = math.Round( 3*round_length/4)
 
-            if (t == 1 or t == ts1 or t == ts2 or t == ts3) then 
+            if tspawn == 0 or tspawn == obunga_delay then 
                 local tempObunga = ents.Create("npc_obunga")
                 local spawns = ents.FindByClass("info_player_start")
                 local random_spawn = math.random(#spawns)
                 tempObunga:SetPos(spawns[random_spawn]:GetPos() + Vector(0,0,5))
                 tempObunga:Spawn()
                 print("[OC] Summoned Obunga")
+                tspawn = 0
             end
             
             -- Ammo Regen:
@@ -103,6 +114,7 @@ function beginRound()
                 endRound()
             end
 
+            tspawn = tspawn + 1
             t = t + 1
         end)
 
