@@ -1,4 +1,7 @@
+-- Obunga Chase v0.11.00
 GM.Name = "Obunga Chase"
+GM.Author = "MajorRelativity"
+GM.Website = "https://github.com/MajorRelativity/Obunga-Chase"
 
 function GM:Initialize()
 

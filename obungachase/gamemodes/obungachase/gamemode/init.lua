@@ -6,6 +6,9 @@ AddCSLuaFile("shared.lua")
 AddCSLuaFile("round_controller/cl_round_controller.lua")
 include("round_controller/sv_round_controller.lua")
 
+AddCSLuaFile("settings/cl_settings.lua")
+include("settings/sv_settings.lua")
+
 include("shared.lua")
 
 function GM:PlayerConnect(name, ip)

@@ -1,0 +1,1 @@
+-- cl_settings: Creates the settings panel on the client
