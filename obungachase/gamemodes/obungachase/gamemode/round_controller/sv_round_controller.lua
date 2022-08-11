@@ -146,6 +146,8 @@ function Loadout( ply, kit )
 
         -- Loadout:
         ply:Give("weapon_crowbar")
+        ply:CanUseFlashlight( true )
+        ply:AllowFlashlight( true )
 
         print( "[OC] ".. ply:Nick() .. " has been given the Obunga loadout!" ) 
     elseif kit == 2 then
@@ -156,10 +158,14 @@ function Loadout( ply, kit )
         -- Loadout
         ply:Give("weapon_shotgun")
         ply:Give("weapon_fists")
+        ply:CanUseFlashlight( true ) 
+        ply:AllowFlashlight( true )
 
         print( "[OC] ".. ply:Nick() .. " has been given the Runner loadout!" )
     elseif kit == 3 then
         ply:SetModel("models/player/leet.mdl")
+        ply:CanUseFlashlight( true )
+        ply:AllowFlashlight( true )
         print( "[OC] ".. ply:Nick() .. " has been given the Waiting loadout!" )
     end 
 
