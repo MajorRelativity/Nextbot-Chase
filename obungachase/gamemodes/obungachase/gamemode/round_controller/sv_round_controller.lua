@@ -85,11 +85,11 @@ function beginRound()
             -- Creates and obunga at every specific time using player spawn locations
 
             if tspawn == 0 or tspawn == obunga_delay then 
-                local tempObunga = ents.Create("npc_obunga")
+                local tempEnt = ents.Create(selectBot())
                 local spawns = ents.FindByClass("info_player_start")
                 local random_spawn = math.random(#spawns)
-                tempObunga:SetPos(spawns[random_spawn]:GetPos() + Vector(0,0,5))
-                tempObunga:Spawn()
+                tempEnt:SetPos(spawns[random_spawn]:GetPos() + Vector(0,0,5))
+                tempEnt:Spawn()
                 print("[OC] Summoned Obunga")
                 tspawn = 0
             end
