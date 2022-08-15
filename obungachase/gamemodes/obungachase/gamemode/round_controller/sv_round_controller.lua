@@ -10,9 +10,9 @@ if not infinite_round then
     round_length = GetConVar("q_round_length"):GetFloat()
 end
 
-local more_obungas = GetConVar("q_more_obungas"):GetBool()
+local more_nextbots = GetConVar("q_more_nextbots"):GetBool()
 local obunga_delay = -1
-if more_obungas then
+if more_nextbots then
     obunga_delay = GetConVar("q_obunga_delay"):GetFloat()
 end
 
@@ -85,12 +85,13 @@ function beginRound()
             -- Creates and obunga at every specific time using player spawn locations
 
             if tspawn == 0 or tspawn == obunga_delay then 
-                local tempObunga = ents.Create("npc_obunga")
+                local selectedBot = selectBot()
+                local tempEnt = ents.Create(selectedBot)
                 local spawns = ents.FindByClass("info_player_start")
                 local random_spawn = math.random(#spawns)
-                tempObunga:SetPos(spawns[random_spawn]:GetPos() + Vector(0,0,5))
-                tempObunga:Spawn()
-                print("[OC] Summoned Obunga")
+                tempEnt:SetPos(spawns[random_spawn]:GetPos() + Vector(0,0,5))
+                tempEnt:Spawn()
+                print("[OC] Summoned ".. selectedBot)
                 tspawn = 0
             end
             
@@ -146,6 +147,8 @@ function Loadout( ply, kit )
 
         -- Loadout:
         ply:Give("weapon_crowbar")
+        ply:CanUseFlashlight( true )
+        ply:AllowFlashlight( true )
 
         print( "[OC] ".. ply:Nick() .. " has been given the Obunga loadout!" ) 
     elseif kit == 2 then
@@ -156,10 +159,14 @@ function Loadout( ply, kit )
         -- Loadout
         ply:Give("weapon_shotgun")
         ply:Give("weapon_fists")
+        ply:CanUseFlashlight( true ) 
+        ply:AllowFlashlight( true )
 
         print( "[OC] ".. ply:Nick() .. " has been given the Runner loadout!" )
     elseif kit == 3 then
         ply:SetModel("models/player/leet.mdl")
+        ply:CanUseFlashlight( true )
+        ply:AllowFlashlight( true )
         print( "[OC] ".. ply:Nick() .. " has been given the Waiting loadout!" )
     end 
 
@@ -204,11 +211,14 @@ local function checkRoundOver()
         -- Remove Timer:
         timer.Remove( "RoundTimer" )
         
-        -- Remove All Obungas
-        local obungas = ents.FindByClass( "npc_obunga" )
+        -- Remove All Nextbots
 
-        for k, v in pairs(obungas) do 
-            obungas[k]:Remove()
+        for k, v in pairs(getActiveNextbots()) do
+            local nextbots = ents.FindByClass( v )
+
+            for k2, v2 in pairs(nextbots) do 
+                nextbots[k2]:Remove()
+            end
         end
     end
 end
@@ -223,11 +233,14 @@ function endRound()
     -- Remove Timer:
     timer.Remove( "RoundTimer" )
     
-    -- Remove All Obungas
-    local obungas = ents.FindByClass( "npc_obunga" )
+    -- Remove All Nextbots
 
-    for k, v in pairs(obungas) do 
-        obungas[k]:Remove()
+    for k, v in pairs(getActiveNextbots()) do
+        local nextbots = ents.FindByClass( v )
+
+        for k2, v2 in pairs(nextbots) do 
+            nextbots[k2]:Remove()
+        end
     end
 
     -- Update Client of the Round Status

@@ -32,9 +32,9 @@
 
 		3
 		{
-			"name"		"q_more_obungas"
-			"text"		"Spawn More Obungas Over Time"
-			"help"		"Boolean - If enabled Obungas will increase in number over time"
+			"name"		"q_more_nextbots"
+			"text"		"Spawn More Nextbots Over Time"
+			"help"		"Boolean - If enabled the number of nextbots will increase in number over time"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer"	"1"
@@ -43,10 +43,40 @@
 		4
 		{
 			"name"		"q_obunga_delay"
-			"text"		"Additional Obunga Spawn Delay (seconds)"
+			"text"		"Additional Nextbot Spawn Delay (seconds)"
 			"help"		"Integer - The maximum length of each round"
 			"type"		"Numeric"
 			"default"	"200"
+			"singleplayer"	"1"
+		}
+
+		5
+		{
+			"name"		"q_npc_obunga"
+			"text"		"Obunga Nextbot"
+			"help"		"Boolean - If true Obunga will spawn during the round"
+			"type"		"CheckBox"
+			"default"	"1"
+			"singleplayer"	"1"
+		}
+
+		6
+		{
+			"name"		"q_npc_therock"
+			"text"		"The Rock Nextbot"
+			"help"		"Boolean - If true The Rock will spawn during the round"
+			"type"		"CheckBox"
+			"default"	"0"
+			"singleplayer"	"1"
+		}
+
+		7
+		{
+			"name"		"q_npc_custom"
+			"text"		"Custom Nextbot Name (see workshop page for tutorial on how to add your own nextbot):"
+			"help"		"Text - The name of the custom nextbot you intend to use. It can be found by right clicking on the nextbot in the spawn menue in sandbox"
+			"type"		"Text"
+			"default"	""
 			"singleplayer"	"1"
 		}
 	}

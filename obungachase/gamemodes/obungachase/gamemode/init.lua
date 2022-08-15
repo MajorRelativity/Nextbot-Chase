@@ -3,11 +3,11 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 
 -- Include Other Scripts:
-AddCSLuaFile("round_controller/cl_round_controller.lua")
-include("round_controller/sv_round_controller.lua")
-
 AddCSLuaFile("settings/cl_settings.lua")
 include("settings/sv_settings.lua")
+
+AddCSLuaFile("round_controller/cl_round_controller.lua")
+include("round_controller/sv_round_controller.lua")
 
 include("shared.lua")
 
