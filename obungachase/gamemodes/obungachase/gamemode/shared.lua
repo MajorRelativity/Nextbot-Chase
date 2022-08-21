@@ -1,4 +1,4 @@
--- Obunga Chase v0.12.00
+-- Obunga Chase v1.00.00
 GM.Name = "Obunga Chase"
 GM.Author = "MajorRelativity"
 GM.Website = "https://github.com/MajorRelativity/Obunga-Chase"

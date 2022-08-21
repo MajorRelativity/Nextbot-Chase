@@ -79,5 +79,41 @@
 			"default"	""
 			"singleplayer"	"1"
 		}
+		8
+		{
+			"name"		"q_npc_custom2"
+			"text"		"Custom Nextbot Name 2:"
+			"help"		"Text - The name of the custom nextbot you intend to use. It can be found by right clicking on the nextbot in the spawn menue in sandbox"
+			"type"		"Text"
+			"default"	""
+			"singleplayer"	"1"
+		}
+		9
+		{
+			"name"		"q_npc_custom3"
+			"text"		"Custom Nextbot Name 3:"
+			"help"		"Text - The name of the custom nextbot you intend to use. It can be found by right clicking on the nextbot in the spawn menue in sandbox"
+			"type"		"Text"
+			"default"	""
+			"singleplayer"	"1"
+		}
+		10
+		{
+			"name"		"q_npc_custom4"
+			"text"		"Custom Nextbot Name 4:"
+			"help"		"Text - The name of the custom nextbot you intend to use. It can be found by right clicking on the nextbot in the spawn menue in sandbox"
+			"type"		"Text"
+			"default"	""
+			"singleplayer"	"1"
+		}
+		11
+		{
+			"name"		"q_npc_custom5"
+			"text"		"Custom Nextbot Name 5:"
+			"help"		"Text - The name of the custom nextbot you intend to use. It can be found by right clicking on the nextbot in the spawn menue in sandbox"
+			"type"		"Text"
+			"default"	""
+			"singleplayer"	"1"
+		}
 	}
 }
