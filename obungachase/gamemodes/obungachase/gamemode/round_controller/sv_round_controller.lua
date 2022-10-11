@@ -31,6 +31,17 @@ function GM:ShowSpare1( ply )
 
 end
 
+-- Choose Player:
+function GM:ShowSpare2( ply )
+    if round_status == 0 then
+        ply:ConCommand("playermodel_selector")
+        print("[OC] " .. ply:Nick() .. " is attempting to change their player model.")
+    else
+        print("[OC] " .. ply:Nick() .. " attempted to change their player model while the round was in progress.")
+    end
+
+end
+
 -- PreRound
 
 function cancelPreRound( ply )
@@ -154,7 +165,6 @@ function Loadout( ply, kit )
     elseif kit == 2 then
         -- Atributes:
         ply:SetHealth( 2*ply:GetMaxHealth() )
-        ply:SetModel("models/player/gman_high.mdl")
 
         -- Loadout
         ply:Give("weapon_shotgun")

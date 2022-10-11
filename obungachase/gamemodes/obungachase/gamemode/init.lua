@@ -21,5 +21,6 @@ function GM:PlayerInitialSpawn(ply)
 
     print("[OC] Player "..ply:Name().." has spawned")
     PrintMessage(3, "[OC] Press the F3 key to start a round.")
+    PrintMessage(3, "[OC] Press the F4 key to choose your player model (only works in between rounds).")
 
 end
